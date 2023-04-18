@@ -120,7 +120,30 @@ function getCityInfo(cityData) {
     var lat = cityData.lat;
     var lon = cityData.lon;
     var city = cityData.name;
-    
+    initMap();
+    function initMap() {
+         var geocoder = new google.maps.Geocoder();
+  var address = document.getElementById('textboxid').value;
+
+  geocoder.geocode({
+    'address': address
+  }, function(results, status) {
+
+    if (status == google.maps.GeocoderStatus.OK) {
+      var latitude = results[0].geometry.location.lat();
+      var longitude = results[0].geometry.location.lng();
+    }
+  });
+		var uluru = {lat: lat, lng: lon};
+		var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 14,
+		center: uluru
+		});
+		var marker = new google.maps.Marker({
+		position: uluru,
+		map: map
+		});
+	}
     var url = `${apiUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${apiKey}`;
     
     fetch(url)
